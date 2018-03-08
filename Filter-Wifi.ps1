@@ -1,4 +1,4 @@
-﻿#region Log-It Function
+#region Log-It Function
 <#
 .SYNOPSIS
   Removes Wifi networks from device.
@@ -8,13 +8,13 @@
   -enabled (Mandatory)
         Available options : $true, $false  
 .OUTPUTS
-  Log file stored in C:\LDlogs\$LogName.html>
+  Log file stored in C:\LDlogs\$Logfile.html>
 .NOTES
   Version:        1.0
   Author:         Thomas Dobson
   Creation Date:  3/7/2018
-  Change Date:    3/6/2017
-  Purpose/Change: Initial Creation
+  Change Date:    3/8/2017
+  Purpose/Change: Formatting and additional notes.
   
 .EXAMPLE
   Filter-Wifi -enabled $false
@@ -372,30 +372,30 @@ Function Log-It
 #endregion
 
 
-    #Main
-        Log-It "INFORM" "Initiating Sharp Wifi Filter Logfile" $logfile -intializeNewLog $true
-        if ($enabled) {
-            if ((CheckForExistingFilters) -ge $wirelessFilterArray.Count) {
-                $action = "add"
-                detectAndFilterWifi
-                verifiyFiltersApplied
-            } else {
-                Log-It "SUCCESS" "All filters already applied. Ending Script" $logfile
-            }
-
+#Main
+    Log-It "INFORM" "Initiating Sharp Wifi Filter Logfile" $logfile -intializeNewLog $true
+    if ($enabled) {
+        if ((CheckForExistingFilters) -ge $wirelessFilterArray.Count) {
+            $action = "add"
+            detectAndFilterWifi
+            verifiyFiltersApplied
         } else {
-            $action = "delete"
+            Log-It "SUCCESS" "All filters already applied. Ending Script" $logfile
+        }
+
+    } else {
+        $action = "delete"
+        If((CheckForExistingFilters) -ge $wirelessFilterArray.Count) {
+            Log-It "SUCCESS" "No Filters Present." $logfile
+        } else {
+            disableFilters
             If((CheckForExistingFilters) -ge $wirelessFilterArray.Count) {
-                Log-It "SUCCESS" "No Filters Present." $logfile
+                Log-It "SUCCESS" "All Filters Deleted Successfully" $logfile
             } else {
-                disableFilters
-                If((CheckForExistingFilters) -ge $wirelessFilterArray.Count) {
-                    Log-It "SUCCESS" "All Filters Deleted Successfully" $logfile
-                } else {
-                    Log-It "FATAL" "All Filters Deleted Successfully" $logfile
-                }
+                Log-It "FATAL" "All Filters Deleted Successfully" $logfile
             }
         }
+    }
 
 
 }
